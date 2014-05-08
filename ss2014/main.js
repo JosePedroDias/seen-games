@@ -1,12 +1,24 @@
+var screenFact = 2;
+
 var updateScreenDims = function(cvsEl) {
   var d = [
     window.innerWidth,
     window.innerHeight
   ];
+
+  if (screenFact !== 1) {
+    d[0] = Math.floor(d[0] / screenFact);
+    d[1] = Math.floor(d[1] / screenFact);
+    var s = cvsEl.style;
+    s.width  = (d[0] * screenFact) + 'px';
+    s.height = (d[1] * screenFact) + 'px';
+  }
+
   if (cvsEl) {
     cvsEl.setAttribute('width',  d[0]);
     cvsEl.setAttribute('height', d[1]);
   }
+
   return d;
 };
 
@@ -86,7 +98,7 @@ var genBox = function(X, Y, Z, pos, clr) {
 
 
 // shapes...
-var zoom = 20;
+var zoom = 10;
 var l = zoom;
 var player = genBox(l, l*2, l, [0, l, 0], green);
 var ball   = genCube(l*0.5, [0, 0, 3*l], blue);
@@ -121,8 +133,9 @@ scene.shader = seen.Shaders.phong();
 scene.fractionalPoints = true;
 
 var ctx = seen.Context(canvasEl, scene);
-
-
+ctx.ctx.webkitImageSmoothingEnabled = false;
+ctx.ctx.mozImageSmoothingEnabled    = false;
+ctx.ctx.imageSmoothingEnabled       = false;
 
 // run it...
 if (0) {
